@@ -5,7 +5,6 @@
  
  ## Team:
 
-Scrum Master **Achnit Reda**
 *  [Omar Kazoum](https://github.com/omarKazoum)
 *  [Hamza laQraa](https://github.com/Hamzacos)
 *  [Ibrahim Esseddyq](https://github.com/ibrahimesseddyq)
