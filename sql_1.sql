@@ -190,9 +190,9 @@ SELECT users.id,users.first_name,users.last_name,subjects.*
             INNER JOIN exam_grades ON exam_grades.student_id=students.user_id
             INNER JOIN subjects ON subjects.id=exam_grades.subject_id
             WHERE exam_grades.exam_grade=NULL;
-#fiche technique student
+#fiche signalétique student
 SELECT users.phone_nbr,users.email,users.first_name,users.last_name FROM users INNER JOIN students on users.id = students.user_id;
-#fiche technique teacher
+#fiche signalétique teacher
 SELECT * FROM users INNER JOIN teachers on users.id = teachers.user_id;
 #TODO::get each department with it's responsible
 SELECT users.*,teachers.*,departments.* FROM users INNER JOIN role_user ON role_user.user_id=users.id INNER JOIN roles r ON r.id=role_user.role_id INNER JOIN teachers ON teachers.user_id=users.id = teachers.user_id INNER JOIN departments on teachers.department_id = departments.id WHERE r.id=4;
@@ -201,4 +201,14 @@ SELECT users.*,teachers.*,departments.* FROM users INNER JOIN role_user ON role_
 SELECT * FROM users
     INNER JOIN role_user on users.id = role_user.user_id
     INNER JOIN roles ON roles.id=role_user.role_id WHERE roles.title='admin' AND users.email='omarkazoum96@gmail.com';
-#TODO:: add the other requests
+#En tant qu'Administrateur je peux ajouter un enseignant
+INSERT INTO users(users.first_name,users.last_name,users.email,users.password_hash,users.phone_nbr)
+VALUES ('ibrahim','esseddyq','ibrahimessedyq@gmail.com','','01212121212');
+INSERT INTO role_user(role_user.user_id,role_user.role_id) VALUES (3,3);
+INSERT INTO teachers(teachers.user_id,teachers.subject_id,teachers.department_id,teachers.start_work_date)
+VALUES (3,1,1,'2022-09-19');
+#En tant qu'Administrateur je peux ajouter un département.
+INSERT INTO departments(departments.name,departments.school_id)
+        VALUES('IT department',1);
+
+
