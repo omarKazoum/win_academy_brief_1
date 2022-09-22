@@ -162,10 +162,6 @@ INSERT INTO teachers(teachers.user_id,teachers.subject_id,teachers.department_id
 VALUES (3,1,1,'2022-09-19');
 #making the teacher responsible for the department
 INSERT INTO role_user(user_id, role_id) VALUES (3,4);
-
-/**********************
- *     CRUD STUDENTS  *
- **********************/
 #get all
 SELECT * FROM students;
 #get by id
@@ -181,7 +177,7 @@ DELETE FROM users WHERE users.id=1;
 #update
 UPDATE students SET students.start_date='2032-09-11', students.class_id=1 WHERE students.user_id=3;
 UPDATE users SET users.first_name= 'hamza',users.last_name='lqraa',users.email='hamzalaqraa@gmail.com',users.password_hash='',users.phone_nbr='01212121212' WHERE users.id=2;
-#TODO:: get average by subject
+#get average by subject
 SELECT s.name  AS subject_name,AVG(exam_grades.exam_grade) AS average FROM exam_grades INNER JOIN subjects s on exam_grades.subject_id = s.id GROUP BY s.id;
 #get average by department
 SELECT departments.name AS department_name,AVG(exam_grades.exam_grade) AS average
@@ -194,8 +190,25 @@ SELECT users.id,users.first_name,users.last_name,subjects.*
             INNER JOIN exam_grades ON exam_grades.student_id=students.user_id
             INNER JOIN subjects ON subjects.id=exam_grades.subject_id
             WHERE exam_grades.exam_grade=NULL;
-#imprimer la fiche signalétique (non, prénom, tél, mail) d’un enseignant ou d’un élève.
-
+#fiche signalétique student
+SELECT users.phone_nbr,users.email,users.first_name,users.last_name FROM users INNER JOIN students on users.id = students.user_id;
+#fiche signalétique teacher
+SELECT * FROM users INNER JOIN teachers on users.id = teachers.user_id;
 #TODO::get each department with it's responsible
 SELECT users.*,teachers.*,departments.* FROM users INNER JOIN role_user ON role_user.user_id=users.id INNER JOIN roles r ON r.id=role_user.role_id INNER JOIN teachers ON teachers.user_id=users.id = teachers.user_id INNER JOIN departments on teachers.department_id = departments.id WHERE r.id=4;
+
+#TODO:: En tant qu'Administrateur je peux se t'authentifier
+SELECT * FROM users
+    INNER JOIN role_user on users.id = role_user.user_id
+    INNER JOIN roles ON roles.id=role_user.role_id WHERE roles.title='admin' AND users.email='omarkazoum96@gmail.com';
+#En tant qu'Administrateur je peux ajouter un enseignant
+INSERT INTO users(users.first_name,users.last_name,users.email,users.password_hash,users.phone_nbr)
+VALUES ('ibrahim','esseddyq','ibrahimessedyq@gmail.com','','01212121212');
+INSERT INTO role_user(role_user.user_id,role_user.role_id) VALUES (3,3);
+INSERT INTO teachers(teachers.user_id,teachers.subject_id,teachers.department_id,teachers.start_work_date)
+VALUES (3,1,1,'2022-09-19');
+#En tant qu'Administrateur je peux ajouter un département.
+INSERT INTO departments(departments.name,departments.school_id)
+        VALUES('IT department',1);
+
 
