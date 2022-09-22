@@ -97,7 +97,14 @@ CREATE TABLE class_student(
     FOREIGN KEY (class_id) REFERENCES classes(id),
     primary key (student_id,class_id)
 
- )
+ );
+CREATE TABLE class_subject(
+  class_id INT,
+  subject_id INT,
+  FOREIGN KEY (class_id) REFERENCES classes(id),
+  FOREIGN KEY (subject_id) REFERENCES subjects(id),
+  PRIMARY KEY (subject_id,class_id)
+);
 CREATE TABLE exam_grades(
                             id INT AUTO_INCREMENT PRIMARY KEY,
                             exam_grade FLOAT DEFAULT NULL,
