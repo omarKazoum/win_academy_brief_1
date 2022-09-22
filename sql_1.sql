@@ -89,6 +89,12 @@ CREATE TABLE class_subject(
   FOREIGN KEY (subject_id) REFERENCES subjects(id),
   PRIMARY KEY (subject_id,class_id)
 );
+CREATE TABLE class_teacher(
+    class_id INT,
+    teacher_id INT,
+    FOREIGN KEY (class_id) REFERENCES classes(id),
+    FOREIGN KEY (teacher_id) REFERENCES teachers(user_id)
+);
 CREATE TABLE exam_grades(
                             id INT AUTO_INCREMENT PRIMARY KEY,
                             exam_grade FLOAT DEFAULT NULL,
