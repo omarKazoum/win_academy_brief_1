@@ -90,6 +90,14 @@ CREATE TABLE class_student(
     primary key (student_id,class_id)
 
  );
+CREATE TABLE class_student(
+    student_id INT,
+    class_id INT,
+    FOREIGN KEY (student_id) REFERENCES students(user_id),
+    FOREIGN KEY (class_id) REFERENCES classes(id),
+    primary key (student_id,class_id)
+
+ )
 CREATE TABLE exam_grades(
                             id INT AUTO_INCREMENT PRIMARY KEY,
                             exam_grade FLOAT DEFAULT NULL,
