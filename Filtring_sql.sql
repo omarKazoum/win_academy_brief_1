@@ -26,3 +26,5 @@ WHERE t.user_id = 3 and r.title = "student" and cl.id =1;
 -- autant que responsable : calculer la moyen de departement
 SELECT AVG(exam_grade) departement_grade FROM exam_grades eg  INNER JOIN subjects s ON s.id = eg.subject_id 
 INNER JOIN teachers t ON s.id = t.subject_id INNER JOIN departements d ON d.id = t.departement_id WHERE d.id = 1;
+-- autant que etudiant : peux savoir mes notes
+SELECT eg.exam_grade ,s.name FROM exam_grades eg INNER JOIN subjects s ON s.id = eg.subject_id WHERE eg.student_id = 1;
