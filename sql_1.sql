@@ -39,6 +39,7 @@ CREATE TABLE subjects(
                          room_id INT,
                          FOREIGN KEY (room_id) REFERENCES rooms(id)
 );
+DROP TABLE IF EXISTS teachers;
 CREATE TABLE teachers(
                          user_id INT PRIMARY KEY,
                          start_work_date DATE,
@@ -47,18 +48,15 @@ CREATE TABLE teachers(
                          FOREIGN KEY (user_id) REFERENCES users(id),
                          FOREIGN KEY (subject_id) REFERENCES subjects(id)
 );
-
+DROP TABLE IF EXISTS departments ;
+DESCRIBE departments;
 CREATE TABLE departments(
                             id INT AUTO_INCREMENT primary key ,
                             `name` VARCHAR(50),
-                            responsible_id INT,
                             school_id INT,
-                            FOREIGN KEY (school_id) REFERENCES schools(id),
-                            FOREIGN KEY (responsible_id) REFERENCES teachers(user_id)
+                            FOREIGN KEY (school_id) REFERENCES schools(id)
 );
 # add foreign key outside table creation script because of recursive relationship
-ALTER TABLE teachers ADD FOREIGN KEY (department_id) REFERENCES departments(id);
-
 CREATE TABLE roles(
                       id INT AUTO_INCREMENT primary key ,
                       title varchar(30)
@@ -69,18 +67,20 @@ CREATE TABLE role_user(
                           FOREIGN KEY (user_id) REFERENCES users(id),
                           FOREIGN KEY (role_id) REFERENCES roles(id)
 );
-
+DROP TABLE IF EXISTS classes;
 CREATE TABLE classes(
                         id INT AUTO_INCREMENT PRIMARY KEY ,
                         `name` VARCHAR(50) NOT NULL,
                         department_id INT NOT NULL,
                         FOREIGN KEY (department_id) REFERENCES departments(id)
 );
+DROP TABLE students;
 CREATE TABLE students(user_id INT AUTO_INCREMENT PRIMARY KEY ,
                       start_date DATE,
                       class_id INT,
                       FOREIGN KEY (class_id) REFERENCES classes(id)
 );
+DROP TABLE class_student;
 CREATE TABLE class_student(
                               class_id INT,
                               student_id INT,
@@ -88,7 +88,6 @@ CREATE TABLE class_student(
                               FOREIGN KEY (student_id) REFERENCES students(user_id)
 
 );
-
 CREATE TABLE exam_grades(
                             id INT AUTO_INCREMENT PRIMARY KEY,
                             exam_grade FLOAT DEFAULT NULL,
@@ -109,23 +108,41 @@ INSERT INTO cities(cities.name) values ('marrakech');
 #insert schools
 INSERT INTO schools(schools.name,schools.site_url) VALUES('Youcode','www.youcode.ma');
 INSERT INTO schools(schools.name,schools.site_url) VALUES('1337','www.1337.ma');
-
+SELECT  * FROM schools;
 #insert adresses
 #TODO:: insert some adresses for the inserted schools
 #insert departments
-
+INSERT INTO departments(departments.name,departments.school_id)
+VALUES ('IT department',2);
+SELECT * FROM departments;
 #inserting classes
+INSERT INTO classes(classes.department_id,classes.name)
+VALUES (1,'java/angular');
+INSERT INTO classes(classes.department_id,classes.name)
+VALUES (1,'fullStack/js');
+SELECT * FROM classes;
+#inserting rooms
+INSERT INTO rooms(rooms.name,rooms.capacity) VALUES('namek',30);
+INSERT INTO rooms(rooms.name,rooms.capacity) VALUES('404',10);
+
+#inserting some subjects
+INSERT INTO subjects(subjects.name,subjects.room_id)
+VALUES ('java',1);
+INSERT INTO subjects(subjects.name,subjects.room_id)
+VALUES ('js',2);
 
 #inserting some users
 #insert roles
 INSERT INTO roles(roles.title) VALUES ('admin');
 INSERT INTO roles(roles.title) VALUES ('student');
 INSERT INTO roles(roles.title) VALUES ('teacher');
+INSERT INTO roles(roles.title) VALUES ('head_of_department');
+SELECT * from roles;
 #admin user
 INSERT INTO users(users.first_name,users.last_name,users.email,users.password_hash,users.phone_nbr)
 VALUES ('omar','kazoum','omarkazoum96@gmail.com','','0610204662');
 INSERT INTO role_user(role_user.user_id,role_user.role_id) VALUES (1,1);
-INSERT INTO students(students.user_id,students.start_date,students.class_id) VALUES (1,NOW(),1)
+INSERT INTO students(students.user_id,students.start_date,students.class_id) VALUES (1,NOW(),1);
 #student user
 INSERT INTO users(users.first_name,users.last_name,users.email,users.password_hash,users.phone_nbr)
 VALUES ('hamza','lqraa','hamzalaqraa@gmail.com','','01212121212');
@@ -134,9 +151,36 @@ INSERT INTO role_user(role_user.user_id,role_user.role_id) VALUES (2,2);
 INSERT INTO users(users.first_name,users.last_name,users.email,users.password_hash,users.phone_nbr)
 VALUES ('ibrahim','esseddyq','ibrahimessedyq@gmail.com','','01212121212');
 INSERT INTO role_user(role_user.user_id,role_user.role_id) VALUES (3,3);
+INSERT INTO teachers(teachers.user_id,teachers.subject_id,teachers.department_id,teachers.start_work_date)
+VALUES (3,1,1,'2022-09-19');
+#making the teacher responsible for the department
+INSERT INTO role_user(user_id, role_id) VALUES (3,4);
 
 /**********************
  *     CRUD STUDENTS  *
  **********************/
+#get all
 SELECT * FROM students;
+#get by id
+SELECT * FROM students WHERE students.user_id=1;
+#add
+INSERT INTO users(users.first_name,users.last_name,users.email,users.password_hash,users.phone_nbr)
+VALUES ('hamza','lqraa','hamzalaqraa@gmail.com','','01212121212');
+INSERT INTO role_user(role_user.user_id,role_user.role_id) VALUES (2,2);
+#delete
+DELETE FROM students WHERE students.user_id=1;
+DELETE FROM users WHERE users.id=1;
+#update
+UPDATE students SET students.start_date='2032-09-11', students.class_id=1 WHERE students.user_id=3;
+UPDATE users SET users.first_name= 'hamza',users.last_name='lqraa',users.email='hamzalaqraa@gmail.com',users.password_hash='',users.phone_nbr='01212121212' WHERE users.id=2;
+#TODO:: get average by subject
+
+#TODO:: get average by department
+
+#TODO:: get average by subject
+
+#TODO:: get average by student
+
+#TODO:: get all non not graded subjects for a student
+
 
