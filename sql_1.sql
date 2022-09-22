@@ -61,11 +61,13 @@ CREATE TABLE roles(
                       id INT AUTO_INCREMENT primary key ,
                       title varchar(30)
 );
+DROP TABLE role_user;
 CREATE TABLE role_user(
                           user_id INT  ,
                           role_id INT,
                           FOREIGN KEY (user_id) REFERENCES users(id),
-                          FOREIGN KEY (role_id) REFERENCES roles(id)
+                          FOREIGN KEY (role_id) REFERENCES roles(id),
+                          PRIMARY KEY (user_id,role_id)
 );
 DROP TABLE IF EXISTS classes;
 CREATE TABLE classes(
@@ -167,6 +169,7 @@ SELECT * FROM students WHERE students.user_id=1;
 INSERT INTO users(users.first_name,users.last_name,users.email,users.password_hash,users.phone_nbr)
 VALUES ('hamza','lqraa','hamzalaqraa@gmail.com','','01212121212');
 INSERT INTO role_user(role_user.user_id,role_user.role_id) VALUES (2,2);
+SELECT * FROM role_user;
 #delete
 DELETE FROM students WHERE students.user_id=1;
 DELETE FROM users WHERE users.id=1;
@@ -182,5 +185,6 @@ UPDATE users SET users.first_name= 'hamza',users.last_name='lqraa',users.email='
 #TODO:: get average by student
 
 #TODO:: get all non not graded subjects for a student
+
 
 
