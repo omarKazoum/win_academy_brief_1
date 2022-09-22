@@ -82,14 +82,6 @@ CREATE TABLE students(user_id INT AUTO_INCREMENT PRIMARY KEY ,
                       class_id INT,
                       FOREIGN KEY (class_id) REFERENCES classes(id)
 );
-DROP TABLE class_student;
-CREATE TABLE class_student(
-                              class_id INT,
-                              student_id INT,
-                              FOREIGN KEY (class_id) REFERENCES classes(id),
-                              FOREIGN KEY (student_id) REFERENCES students(user_id)
-
-);
 CREATE TABLE exam_grades(
                             id INT AUTO_INCREMENT PRIMARY KEY,
                             exam_grade FLOAT DEFAULT NULL,
@@ -185,6 +177,6 @@ UPDATE users SET users.first_name= 'hamza',users.last_name='lqraa',users.email='
 #TODO:: get average by student
 
 #TODO:: get all non not graded subjects for a student
-
-
+#getting each department with it's responsible
+SELECT users.*,teachers.*,departments.* FROM users INNER JOIN role_user ON role_user.user_id=users.id INNER JOIN roles r ON r.id=role_user.role_id INNER JOIN teachers ON teachers.user_id=users.id = teachers.user_id INNER JOIN departments on teachers.department_id = departments.id WHERE r.id=4;
 
