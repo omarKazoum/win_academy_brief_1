@@ -192,7 +192,7 @@ DELETE FROM users WHERE users.id=1;
 UPDATE students SET students.start_date='2032-09-11', students.class_id=1 WHERE students.user_id=3;
 UPDATE users SET users.first_name= 'hamza',users.last_name='lqraa',users.email='hamzalaqraa@gmail.com',users.password_hash='',users.phone_nbr='01212121212' WHERE users.id=2;
 #TODO:: get average by subject
-
+SELECT s.name  AS subject_name,AVG(exam_grades.exam_grade) AS average FROM exam_grades INNER JOIN subjects s on exam_grades.subject_id = s.id GROUP BY s.id;
 #TODO:: get average by department
 
 #TODO:: get average by subject
