@@ -82,22 +82,6 @@ CREATE TABLE students(user_id INT AUTO_INCREMENT PRIMARY KEY ,
                       class_id INT,
                       FOREIGN KEY (class_id) REFERENCES classes(id)
 );
-CREATE TABLE class_student(
-    student_id INT,
-    class_id INT,
-    FOREIGN KEY (student_id) REFERENCES students(user_id),
-    FOREIGN KEY (class_id) REFERENCES classes(id),
-    primary key (student_id,class_id)
-
- );
-CREATE TABLE class_student(
-    student_id INT,
-    class_id INT,
-    FOREIGN KEY (student_id) REFERENCES students(user_id),
-    FOREIGN KEY (class_id) REFERENCES classes(id),
-    primary key (student_id,class_id)
-
- );
 CREATE TABLE class_subject(
   class_id INT,
   subject_id INT,
@@ -193,13 +177,19 @@ UPDATE students SET students.start_date='2032-09-11', students.class_id=1 WHERE 
 UPDATE users SET users.first_name= 'hamza',users.last_name='lqraa',users.email='hamzalaqraa@gmail.com',users.password_hash='',users.phone_nbr='01212121212' WHERE users.id=2;
 #TODO:: get average by subject
 SELECT s.name  AS subject_name,AVG(exam_grades.exam_grade) AS average FROM exam_grades INNER JOIN subjects s on exam_grades.subject_id = s.id GROUP BY s.id;
-#TODO:: get average by department
+#get average by department
+SELECT departments.name AS department_name,AVG(exam_grades.exam_grade) AS average
+    FROM exam_grades INNER JOIN students on exam_grades.student_id = students.user_id INNER JOIN classes ON classes.id=students.class_id = classes.id INNER JOIN departments ON classes.department_id=departments.id GROUP BY departments.id;
+#get average by student
+SELECT CONCAT(users.first_name,' ',users.last_name) AS student_full_name,AVG(exam_grades.exam_grade) AS average FROM exam_grades INNER JOIN students on exam_grades.student_id = students.user_id INNER JOIN users ON users.id=students.user_id = users.id GROUP BY students.user_id;
+#get all not graded subjects for a student
+SELECT users.id,users.first_name,users.last_name,subjects.*
+        FROM students INNER JOIN users ON users.id=students.user_id
+            INNER JOIN exam_grades ON exam_grades.student_id=students.user_id
+            INNER JOIN subjects ON subjects.id=exam_grades.subject_id
+            WHERE exam_grades.exam_grade=NULL;
+#imprimer la fiche signalétique (non, prénom, tél, mail) d’un enseignant ou d’un élève.
 
-#TODO:: get average by subject
-
-#TODO:: get average by student
-
-#TODO:: get all non not graded subjects for a student
-#getting each department with it's responsible
+#TODO::get each department with it's responsible
 SELECT users.*,teachers.*,departments.* FROM users INNER JOIN role_user ON role_user.user_id=users.id INNER JOIN roles r ON r.id=role_user.role_id INNER JOIN teachers ON teachers.user_id=users.id = teachers.user_id INNER JOIN departments on teachers.department_id = departments.id WHERE r.id=4;
 
