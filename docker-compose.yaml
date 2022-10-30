@@ -1,0 +1,18 @@
+version: "3.0"
+services:
+  db:
+    image: postgres:9-alpine
+    ports:
+      - 5000:5432
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+    volumes:
+      - ./data/database_data:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    ports:
+      - 7678:8080
+    depends_on:
+      - db
+
